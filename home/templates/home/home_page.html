@@ -1,0 +1,636 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+
+{% block extra_css %}
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
+}
+
+.nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    z-index: 1000;
+    padding: 1rem 0;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+.nav-links a {
+    color: #4b5563;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #2563eb;
+}
+
+.lang-toggle {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.lang-toggle:hover {
+    background: #1d4ed8;
+}
+
+.hero {
+    padding: 8rem 2rem 4rem;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-badge {
+    display: inline-block;
+    background: #dbeafe;
+    color: #2563eb;
+    padding: 0.5rem 1.5rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    color: #6b7280;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+}
+
+.btn-primary {
+    display: inline-block;
+    background: #2563eb;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+}
+
+.section {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-white {
+    background: white;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #111827;
+}
+
+.about-text {
+    font-size: 1.125rem;
+    color: #4b5563;
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.skill-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.skill-card h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #111827;
+}
+
+.skill-item {
+    margin-bottom: 1.5rem;
+}
+
+.skill-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.skill-name {
+    font-weight: 600;
+    color: #374151;
+}
+
+.skill-level {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.skill-bar {
+    width: 100%;
+    height: 0.5rem;
+    background: #e5e7eb;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.skill-progress {
+    height: 100%;
+    background: #2563eb;
+    border-radius: 1rem;
+    transition: width 1s ease-out;
+}
+
+.experience-timeline {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.experience-item {
+    border-left: 4px solid #2563eb;
+    padding-left: 2rem;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.experience-year {
+    display: inline-block;
+    background: #2563eb;
+    color: white;
+    padding: 0.25rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.experience-item h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.experience-company {
+    color: #2563eb;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.experience-item ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.experience-item li {
+    color: #4b5563;
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.experience-item li:before {
+    content: "•";
+    color: #2563eb;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.project-card {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    padding: 2rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.project-card h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+.project-description {
+    color: #6b7280;
+    margin-bottom: 1rem;
+}
+
+.project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tech-tag {
+    background: #dbeafe;
+    color: #2563eb;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.project-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.project-link {
+    color: #6b7280;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.3s;
+}
+
+.project-link:hover {
+    color: #2563eb;
+}
+
+.education-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.education-card {
+    background: linear-gradient(135deg, #eff6ff 0%, white 100%);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.education-year {
+    color: #2563eb;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.education-card h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.education-institution {
+    color: #4b5563;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.education-description {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.contact {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    color: white;
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.contact h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.contact p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.contact-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.contact-item {
+    color: white;
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+.contact-item:hover {
+    opacity: 0.8;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.social-link {
+    color: white;
+    font-size: 2rem;
+    transition: opacity 0.3s;
+}
+
+.social-link:hover {
+    opacity: 0.8;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .nav-links {
+        display: none;
+    }
+    
+    .skills-grid,
+    .projects-grid,
+    .education-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<nav class="nav">
+    <div class="nav-container">
+        <div class="nav-logo">Portfolio</div>
+        <ul class="nav-links">
+            <li><a href="#about" data-fr="À propos" data-en="About">À propos</a></li>
+            <li><a href="#skills" data-fr="Compétences" data-en="Skills">Compétences</a></li>
+            <li><a href="#experience" data-fr="Expérience" data-en="Experience">Expérience</a></li>
+            <li><a href="#projects" data-fr="Projets" data-en="Projects">Projets</a></li>
+            <li><a href="#education" data-fr="Formation" data-en="Education">Formation</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="lang-toggle" onclick="toggleLanguage()">EN</button>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-badge" data-fr="{{ page.hero_subtitle_fr }}" data-en="{{ page.hero_subtitle_en }}">
+        {{ page.hero_subtitle_fr }}
+    </div>
+    <h1 data-fr="{{ page.hero_title_fr }}" data-en="{{ page.hero_title_en }}">
+        {{ page.hero_title_fr }}
+    </h1>
+    <p data-fr="{{ page.hero_description_fr|striptags }}" data-en="{{ page.hero_description_en|striptags }}">
+        {{ page.hero_description_fr|striptags }}
+    </p>
+    <a href="#projects" class="btn-primary" data-fr="Voir mes projets" data-en="View my projects">
+        Voir mes projets
+    </a>
+</section>
+
+<section id="about" class="section section-white">
+    <h2 class="section-title" data-fr="{{ page.about_title_fr }}" data-en="{{ page.about_title_en }}">
+        {{ page.about_title_fr }}
+    </h2>
+    <div class="about-text" data-fr="{{ page.about_text_fr|striptags }}" data-en="{{ page.about_text_en|striptags }}">
+        {{ page.about_text_fr|striptags }}
+    </div>
+</section>
+
+<section id="skills" class="section">
+    <h2 class="section-title" data-fr="Compétences" data-en="Skills">Compétences</h2>
+    <div class="skills-grid">
+        {% regroup page.skills.all by category as skill_categories %}
+        {% for category in skill_categories %}
+        <div class="skill-card">
+            <h3>
+                {% if category.grouper == 'webdev' %}
+                    <span data-fr="Développement Web" data-en="Web Development">Développement Web</span>
+                {% elif category.grouper == 'customer' %}
+                    <span data-fr="Customer Success" data-en="Customer Success">Customer Success</span>
+                {% elif category.grouper == 'digital' %}
+                    <span data-fr="Marketing Digital" data-en="Digital Marketing">Marketing Digital</span>
+                {% else %}
+                    <span data-fr="Outils & CRM" data-en="Tools & CRM">Outils & CRM</span>
+                {% endif %}
+            </h3>
+            {% for skill in category.list %}
+            <div class="skill-item">
+                <div class="skill-header">
+                    <span class="skill-name">{{ skill.name }}</span>
+                    <span class="skill-level">{{ skill.level }}%</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: {{ skill.level }}%"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section id="experience" class="section section-white">
+    <h2 class="section-title" data-fr="Expérience Professionnelle" data-en="Professional Experience">
+        Expérience Professionnelle
+    </h2>
+    <div class="experience-timeline">
+        {% for exp in page.experiences.all %}
+        <div class="experience-item">
+            <span class="experience-year">{{ exp.year }}</span>
+            <h3 class="lang-fr">{{ exp.title_fr }}</h3>
+            <h3 class="lang-en hidden">{{ exp.title_en }}</h3>
+            <div class="experience-company">{{ exp.company }}</div>
+            <div class="lang-fr">{{ exp.description_fr|safe }}</div>
+            <div class="lang-en hidden">{{ exp.description_en|safe }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section id="projects" class="section">
+    <h2 class="section-title" data-fr="Projets Web" data-en="Web Projects">Projets Web</h2>
+    <div class="projects-grid">
+        {% for project in page.projects.all %}
+        <div class="project-card">
+            <h3 class="lang-fr">{{ project.title_fr }}</h3>
+            <h3 class="lang-en hidden">{{ project.title_en }}</h3>
+            <div class="project-description lang-fr">{{ project.description_fr|striptags }}</div>
+            <div class="project-description lang-en hidden">{{ project.description_en|striptags }}</div>
+            <div class="project-tech">
+                {% for tech in project.technologies.split %}
+                <span class="tech-tag">{{ tech|cut:"," }}</span>
+                {% endfor %}
+            </div>
+            <div class="project-links">
+                {% if project.github_url %}
+                <a href="{{ project.github_url }}" class="project-link" target="_blank" data-fr="Voir le code" data-en="View code">
+                    Voir le code
+                </a>
+                {% endif %}
+                {% if project.live_url %}
+                <a href="{{ project.live_url }}" class="project-link" target="_blank" data-fr="Voir le site" data-en="View site">
+                    Voir le site
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section id="education" class="section section-white">
+    <h2 class="section-title" data-fr="Formation" data-en="Education">Formation</h2>
+    <div class="education-grid">
+        {% for edu in page.education.all %}
+        <div class="education-card">
+            <div class="education-year">{{ edu.year }}</div>
+            <h3 class="lang-fr">{{ edu.title_fr }}</h3>
+            <h3 class="lang-en hidden">{{ edu.title_en }}</h3>
+            <div class="education-institution">{{ edu.institution }}</div>
+            <div class="education-description">{{ edu.description }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section id="contact" class="contact">
+    <h2 data-fr="Contact" data-en="Contact">Contact</h2>
+    <p data-fr="Disponible pour de nouvelles opportunités" data-en="Available for new opportunities">
+        Disponible pour de nouvelles opportunités
+    </p>
+    <div class="contact-info">
+        {% if page.email %}
+        <a href="mailto:{{ page.email }}" class="contact-item">📧 {{ page.email }}</a>
+        {% endif %}
+        {% if page.phone %}
+        <a href="tel:{{ page.phone }}" class="contact-item">📞 {{ page.phone }}</a>
+        {% endif %}
+        {% if page.location %}
+        <span class="contact-item">📍 {{ page.location }}</span>
+        {% endif %}
+    </div>
+    <div class="social-links">
+        {% if page.linkedin_url %}
+        <a href="{{ page.linkedin_url }}" class="social-link" target="_blank">in</a>
+        {% endif %}
+        {% if page.github_url %}
+        <a href="{{ page.github_url }}" class="social-link" target="_blank">⚡</a>
+        {% endif %}
+    </div>
+</section>
+
+<script>
+let currentLang = 'fr';
+
+function toggleLanguage() {
+    currentLang = currentLang === 'fr' ? 'en' : 'fr';
+    const toggleBtn = document.querySelector('.lang-toggle');
+    toggleBtn.textContent = currentLang === 'fr' ? 'EN' : 'FR';
+    
+    // Toggle tous les éléments avec data-fr et data-en
+    document.querySelectorAll('[data-fr][data-en]').forEach(el => {
+        el.textContent = el.getAttribute('data-' + currentLang);
+    });
+    
+    // Toggle les sections avec classes lang-fr et lang-en
+    document.querySelectorAll('.lang-fr').forEach(el => {
+        el.classList.toggle('hidden', currentLang === 'en');
+    });
+    document.querySelectorAll('.lang-en').forEach(el => {
+        el.classList.toggle('hidden', currentLang === 'fr');
+    });
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+});
+</script>
+{% endblock %}
