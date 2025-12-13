@@ -1,38 +1,7 @@
 {% load static wagtailcore_tags wagtailuserbar %}
-# Ajoutez ces imports en haut du fichier
-import os
-import dj_database_url
 
-# Remplacez SECRET_KEY par :
-SECRET_KEY = os.environ.get('SECRET_KEY', 'votre-cle-de-dev-temporaire')
-
-# Remplacez DEBUG par :
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-
-# Remplacez ALLOWED_HOSTS par :
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
-
-# À la fin du fichier, ajoutez :
-if os.environ.get('DATABASE_URL'):
-    DATABASES['default'] = dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
-
-# Configuration des fichiers statiques
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [
-    os.path.join(PROJECT_DIR, 'static'),
-]
-
-# WhiteNoise pour servir les fichiers statiques
-MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
         <meta charset="utf-8" />
         <title>
