@@ -109,7 +109,6 @@ body {
 
 .btn-primary {
     display: inline-block;
-    color: #061a8d;
     background: #2563eb;
     color: white;
     padding: 1rem 2rem;
@@ -121,6 +120,41 @@ body {
 
 .btn-primary:hover {
     background: #1d4ed8;
+}
+
+.btn-secondary {
+    display: inline-block;
+    background: white;
+    color: #2563eb;
+    border: 2px solid #2563eb;
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+    background: #2563eb;
+    color: white;
+}
+
+.btn-download {
+    display: inline-block;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
 }
 
 .section {
@@ -139,7 +173,7 @@ body {
     text-align: center;
     margin-bottom: 3rem;
     color: #061a8d;
-    }
+}
 
 .about-text {
     font-size: 1.0rem;
@@ -167,7 +201,7 @@ body {
     font-weight: 700;
     margin-bottom: 1.5rem;
     color: #061a8d;
-    }
+}
 
 .skill-item {
     margin-bottom: 1.5rem;
@@ -199,7 +233,6 @@ body {
 
 .skill-progress {
     height: 100%;
-    color: #061a8d;
     background: #2563eb;
     border-radius: 1rem;
     transition: width 1s ease-out;
@@ -228,7 +261,7 @@ body {
     margin-bottom: 0.5rem;
 }
 
-.experience-item h4 {
+.experience-item h3 {
     font-size: 1.5rem;
     font-weight: 700;
     color: #061a8d;
@@ -354,7 +387,7 @@ body {
 }
 
 .education-institution {
-    color: #4b5563;
+    color: #053880;
     font-weight: 600;
     margin-bottom: 0.5rem;
 }
@@ -465,9 +498,31 @@ body {
     <p data-fr="{{ page.hero_description_fr|striptags }}" data-en="{{ page.hero_description_en|striptags }}">
         {{ page.hero_description_fr|striptags }}
     </p>
-    <a href="#projects" class="btn-primary" data-fr="Voir mes projets" data-en="View my projects">
-        Voir mes projets
-    </a>
+    
+    <!-- BOUTONS PRINCIPAUX -->
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+        <a href="#projects" class="btn-primary" data-fr="Voir mes projets" data-en="View my projects">
+            Voir mes projets
+        </a>
+        <button onclick="window.print()" class="btn-secondary" data-fr="🖨️ Imprimer" data-en="🖨️ Print">
+            🖨️ Imprimer
+        </button>
+    </div>
+    
+    <!-- BOUTONS CV PDF -->
+    <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+        {% if page.cv_document_fr %}
+        <a href="{{ page.cv_document_fr.url }}" class="btn-download" target="_blank">
+            📄 CV Français
+        </a>
+        {% endif %}
+        
+        {% if page.cv_document_en %}
+        <a href="{{ page.cv_document_en.url }}" class="btn-download" target="_blank">
+            📄 CV English
+        </a>
+        {% endif %}
+    </div>
 </section>
 
 <section id="about" class="section section-white">

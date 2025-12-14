@@ -3,6 +3,7 @@ from wagtail.models import Page
 from wagtail.fields import RichTextField, StreamField
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.snippets.models import register_snippet
+from wagtail.documents.models import Document
 from modelcluster.fields import ParentalKey
 from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
@@ -68,6 +69,24 @@ class HomePage(Page):
     linkedin_url = models.URLField(blank=True)
     github_url = models.URLField(blank=True)
     
+    # CV PDF
+    cv_document_fr = models.ForeignKey(
+        'wagtaildocs.Document',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+        verbose_name="CV PDF Français"
+    )
+    cv_document_en = models.ForeignKey(
+        'wagtaildocs.Document',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+        verbose_name="CV PDF English"
+    )
+    
     content_panels = Page.content_panels + [
         MultiFieldPanel([
             FieldPanel('hero_title_fr'),
@@ -91,6 +110,8 @@ class HomePage(Page):
             FieldPanel('location'),
             FieldPanel('linkedin_url'),
             FieldPanel('github_url'),
+            FieldPanel('cv_document_fr'),
+            FieldPanel('cv_document_en'),
         ], heading="Contact"),
         
         InlinePanel('skills', label="Compétences"),
